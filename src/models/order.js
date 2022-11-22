@@ -4,24 +4,40 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    name: {
+    customer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Customer'
+    },
+    number: {
         type: String,
         required: true
     },
-    email: {
-        type: String,
-        required: true
+    createDate: {
+        type: Date,
+        required: true,
+        default: Date.now
     },
-    password: {
-        type: String,
-        required: true
-    },
-    roles: [{
+    status: {
         type: String,
         required: true,
-        enum: ['user', 'admin'],
-        default: 'user'
-    }]
+        enum: ['created', 'done'],
+        default: 'created'
+    },
+    items: [{
+        quantity: {
+            type: Number,
+            required: true,
+            default: 1
+        },
+        price: {
+            type: Number,
+            required: true
+        },
+        product: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product'
+        }
+    }],
 });
 
-module.exports = mongoose.model('Customer', schema);
+module.exports = mongoose.model('Order', schema);
